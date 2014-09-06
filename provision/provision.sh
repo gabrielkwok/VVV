@@ -456,10 +456,10 @@ if [[ $ping_result == *bytes?from* ]]; then
 	if [[ ! -d /srv/www/wordpress-default ]]; then
 		echo "Downloading WordPress Stable, see http://wordpress.org/"
 		cd /srv/www/
-		curl -O http://wordpress.org/latest.tar.gz
-		tar -xvf latest.tar.gz
-		mv wordpress wordpress-default
-		rm latest.tar.gz
+		curl -O http://wordpress.org/wordpress-3.8.4.tar.gz
+		tar -xvf wordpress-3.8.4.tar.gz
+		mv wordpress-3.8.4 wordpress-default
+		rm wordpress-3.8.4.tar.gz
 		cd /srv/www/wordpress-default
 		echo "Configuring WordPress Stable..."
 		wp core config --dbname=wordpress_default --dbuser=wp --dbpass=wp --quiet --extra-php <<PHP
