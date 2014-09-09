@@ -452,19 +452,20 @@ if [[ $ping_result == *bytes?from* ]]; then
 	/srv/www/phpcs/scripts/phpcs --config-set installed_paths ./CodeSniffer/Standards/WordPress/
 	/srv/www/phpcs/scripts/phpcs -i
 
-	# Install and configure the latest stable version of WordPress
+	# Install and configure the latest stable version of WordPress from the Kiip Blog repo
 	if [[ ! -d /srv/www/wordpress-default ]]; then
-		echo "Downloading WordPress Stable, see http://wordpress.org/"
+		echo "Downloading Kiip Blog..."
+		ssh -T git@github.com -o StrictHostKeyChecking=no
 		cd /srv/www/
-		git clone git@bitbucket.org:gkwok/kiipblogvm.git wordpress-default
-		cd /srv/www/wordpress-default
-		echo "Configuring WordPress Stable..."
-		wp core config --dbname=wordpress_default --dbuser=wp --dbpass=wp --quiet --extra-php <<PHP
-define( 'WP_DEBUG', true );
-PHP
+		rm -rf wordpress-default
+		git clone git@github.com:kiip/blog.git wordpress-default
+		cd wordpress-default
+		echo "Configuring Kiip Blog..."
+		rm -f wp-config.php
+		wp core config --dbname=wordpress_default --dbuser=wp --dbpass=wp --quiet --extra-php
 		wp core install --url=local.wordpress.dev --quiet --title="Local WordPress Dev" --admin_name=admin --admin_email="admin@local.dev" --admin_password="password"
 	else
-		echo "Updating WordPress Stable..."
+		echo "Updating Kiip Blog..."
 		cd /srv/www/wordpress-default
 		wp core upgrade
 	fi
